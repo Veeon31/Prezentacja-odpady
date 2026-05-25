@@ -1,1 +1,315 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skrypt do prezentacji: Gospodarka odpadami tekstylnymi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f8fafc;
+            --text-color: #334155;
+            --card-bg: #ffffff;
+            --border-color: #e2e8f0;
+            --accent-color: #1b4332;
+            --accent-light: #52b788;
+            --slide-title-color: #0f172a;
+        }
 
+        body.dark-mode {
+            --bg-color: #0f172a;
+            --text-color: #cbd5e1;
+            --card-bg: #1e293b;
+            --border-color: #334155;
+            --accent-color: #52b788;
+            --accent-light: #1b4332;
+            --slide-title-color: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            line-height: 1.6;
+        }
+
+        .slide-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-left: 6px solid var(--accent-color);
+            transition: background-color 0.3s, border-color 0.3s, transform 0.2s, box-shadow 0.2s;
+        }
+
+        .slide-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .slide-title {
+            color: var(--slide-title-color);
+        }
+
+        /* Stylizacja listy punktowanej */
+        .bullet-point {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .bullet-point::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+            font-size: 1.25rem;
+            line-height: 1.6;
+        }
+
+        /* Ukrywanie paska przewijania dla czystszego wyglądu, ale zachowanie funkcjonalności */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        .dark-mode ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200 dark:bg-slate-900/80 dark:border-slate-700 transition-colors duration-300">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-md bg-[#1b4332] text-white flex items-center justify-center font-bold text-sm">
+                        SP
+                    </div>
+                    <span class="font-semibold text-gray-900 dark:text-white text-lg hidden sm:block">Skrypt Prelegenta</span>
+                </div>
+                
+                <div class="flex items-center gap-4">
+                    <button id="fontSizeBtn" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300 transition-colors" title="Zmień rozmiar tekstu">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
+                        <span class="sr-only">Zwiększ rozmiar tekstu</span>
+                    </button>
+                    <button id="themeToggle" class="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-600 dark:text-gray-300 transition-colors" title="Przełącz tryb czytania">
+                        <svg id="sunIcon" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg id="moonIcon" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <header class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
+        <h1 class="text-3xl sm:text-4xl font-bold slide-title mb-3">Gospodarka odpadami tekstylnymi</h1>
+        <p class="text-lg opacity-80">Notatki do prezentacji (Inżynieria Środowiska)</p>
+        
+        <div class="mt-6 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-lg text-sm border border-blue-100 dark:border-blue-800">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11.25 11.25l.041-.02a.75.75 0 011.063.852l-.708 2.836a.75.75 0 001.063.853l.041-.021M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9-3.75h.008v.008H12V8.25z" />
+            </svg>
+            <span>Wskazówka: Użyj przycisku w prawym górnym rogu, aby włączyć ciemny tryb, który mniej męczy wzrok w zaciemnionej sali wykładowej.</span>
+        </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-20 space-y-8" id="scriptContainer">
+        
+        <!-- Slajd 1 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">1</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Strona tytułowa</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Dzień dobry państwu. Tematem mojego dzisiejszego wystąpienia jest gospodarka odpadami tekstylnymi, którą omówię w kontekście nadchodzących wyzwań technologicznych i prawnych.</p>
+                <p class="bullet-point">Skupię się na tym, jak branża ta musi przejść od modelu linearnego do gospodarki obiegu zamkniętego, ze szczególnym uwzględnieniem rozwiązań z zakresu inżynierii środowiska.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 2 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">2</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Wstęp – skala problemu „Fast Fashion”</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Obecny model "szybkiej mody" doprowadził do sytuacji, w której w samej Unii Europejskiej generujemy rocznie blisko 13 milionów ton odpadów tekstylnych.</p>
+                <p class="bullet-point">Zdecydowana większość tych ubrań, których czas życia drastycznie się skrócił, ląduje niestety na składowiskach lub jest poddawana prostej incineracji.</p>
+                <p class="bullet-point">To sprawia, że produkcja i utylizacja tekstyliów generuje czwarte najwyższe obciążenie dla środowiska na naszym kontynencie, zaraz po żywności i mieszkalnictwie.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 3 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">3</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Środowiskowe koszty cyklu życia ubrań</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Wpływ ubrań na środowisko to nie tylko odpady, ale też gigantyczny ślad wodny – wyprodukowanie zwykłego t-shirtu wymaga niemal trzech tysięcy litrów wody.</p>
+                <p class="bullet-point">Kolejnym potężnym problemem inżynieryjnym jest odprowadzanie wysoce zanieczyszczonych chemicznie ścieków z farbiarni i tkalni.</p>
+                <p class="bullet-point">Nie zapominajmy również, że niemal przy każdym praniu odzież syntetyczna uwalnia do wód mikrowłókna, co czyni ją jednym z głównych źródeł mikroplastiku w środowisku.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 4 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">4</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Skład i morfologia odpadów tekstylnych</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Gdy przyjrzymy się strumieniowi odpadów tekstylnych, zauważymy dominację tworzyw sztucznych, głównie poliestru, który stanowi ponad 60% materiałów.</p>
+                <p class="bullet-point">Największym inżynieryjnym "wąskim gardłem" w recyklingu nie jest jednak przetwarzanie czystych frakcji, lecz fakt, że większość ubrań to skomplikowane mieszanki włókien.</p>
+                <p class="bullet-point">Skuteczne i opłacalne rozdzielenie materiału takiego jak polibawełna z elastanem na frakcje bazowe, nadal pozostaje ogromnym wyzwaniem technologicznym.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 5 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">5</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Ramy prawne kształtujące branżę</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Kluczowym powodem, dla którego temat ten jest obecnie tak pilny, są unijne regulacje prawne, w tym wdrożony na początku 2025 roku obowiązek selektywnej zbiórki ubrań.</p>
+                <p class="bullet-point">To zmusza samorządy do traktowania tekstyliów jako standardowej frakcji odpadów komunalnych, podobnie jak plastiku czy papieru.</p>
+                <p class="bullet-point">W dłuższej perspektywie, do roku 2030, branżę zrewolucjonizują przepisy o Rozszerzonej Odpowiedzialności Producenta, które wymuszą finansowanie recyklingu przez same marki odzieżowe.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 6 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">6</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Technologie zbiórki i sortowania</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Aby sprostać ogromnej masie zbieranej odzieży, ręczne sortowanie, które jest drogie i obarczone błędem, musi zostać zautomatyzowane.</p>
+                <p class="bullet-point">Przyszłością sortowni, którą państwo tu widzicie, jest technologia bliskiej podczerwieni (NIR), stosowana już z sukcesem przy sortowaniu tworzyw sztucznych.</p>
+                <p class="bullet-point">Pozwala ona na błyskawiczne, optyczne rozpoznanie składu chemicznego materiału poruszającego się na taśmociągu, co jest warunkiem koniecznym do uruchomienia recyklingu na dużą skalę.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 7 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">7</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Metody recyklingu tekstyliów – procesy inżynieryjne</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Obecnie najpowszechniejszy recykling mechaniczny, polegający na szarpaniu materiału, niestety skraca włókna i obniża ich jakość, prowadząc do tzw. downcyclingu.</p>
+                <p class="bullet-point">Dlatego nadzieje pokłada się w recyklingu chemicznym, który poprzez depolimeryzację pozwala rozdzielić mieszanki i odzyskać surowiec o jakości pierwotnej, choć kosztem wysokiego zużycia energii.</p>
+                <p class="bullet-point">Frakcje, których nie da się uratować żadną z tych metod, ze względu na swoją wysoką kaloryczność trafiają ostatecznie do odzysku energetycznego jako paliwo alternatywne RDF.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 8 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">8</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Gospodarka Obiegu Zamkniętego (GOZ)</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Gospodarka Obiegu Zamkniętego w tej branży to nie tylko efektywny recykling, ale przede wszystkim zmiana modelu z "wyprodukuj i wyrzuć" na utrzymanie surowca w pętli.</p>
+                <p class="bullet-point">Kluczową rolę odgrywa tu ekoprojektowanie – uświadamiamy producentom, by szyli z monomateriałów, które łatwo później przetworzyć.</p>
+                <p class="bullet-point">Równolegle rozwija się rynek drugiego obiegu i usług takich jak naprawy czy wypożyczalnie, co naturalnie wydłuża czas życia pojedynczego produktu.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 9 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">9</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Rola Inżyniera Środowiska w rozwiązaniu problemu</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Jako inżynierowie środowiska mamy przed sobą bardzo konkretne zadania, począwszy od projektowania nowoczesnych oczyszczalni zdolnych wyłapywać mikroplastik z procesów pralniczych.</p>
+                <p class="bullet-point">Będziemy również odpowiedzialni za optymalizację instalacji recyklingowych, tak aby procesy chemiczne i sortowanie pochłaniały jak najmniej energii i wody.</p>
+                <p class="bullet-point">Czeka nas też praca nad cyklami życia produktów (LCA) i poszukiwaniem nowych, biokompatybilnych materiałów, które w przyszłości zastąpią trudne w utylizacji syntetyki.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 10 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">10</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Podsumowanie i Perspektywy</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text">
+                <p class="bullet-point">Podsumowując, problem tekstyliów przestał być wyłącznie kwestią etyczną, a stał się priorytetowym problemem inżynierii komunalnej w obliczu nowych regulacji.</p>
+                <p class="bullet-point">Skuteczna dekarbonizacja i ograniczenie szkodliwości tej branży będą wymagały udoskonalenia i wyskalowania technologii recyklingu chemicznego.</p>
+                <p class="bullet-point">Sukces zależy ostatecznie od synergii trzech elementów: mądrego prawa środowiskowego, zaawansowanej inżynierii materiałowej i przemyślanego ekoprojektowania.</p>
+            </div>
+        </article>
+
+        <!-- Slajd 11 -->
+        <article class="slide-card rounded-xl p-6 sm:p-8 border-b-4 border-b-[#1b4332] dark:border-b-[#52b788]">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="flex items-center justify-center w-8 h-8 rounded-full bg-[#1b4332]/10 dark:bg-[#52b788]/20 text-[var(--accent-color)] font-bold text-sm">11</span>
+                <h2 class="text-xl sm:text-2xl font-bold slide-title">Pytania i Dyskusja</h2>
+            </div>
+            <div class="space-y-3 text-lg content-text font-medium text-center py-4">
+                <p>Na tym chciałbym zakończyć moją prezentację.</p>
+                <p>Dziękuję bardzo za uwagę i z przyjemnością odpowiem teraz na państwa pytania.</p>
+            </div>
+        </article>
+
+    </main>
+
+    <script>
+        // Logika przełączania motywów (Jasny/Ciemny)
+        const themeToggleBtn = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        
+        // Sprawdź preferencje systemu
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.body.classList.add('dark-mode');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        });
+
+        // Logika powiększania tekstu
+        const fontSizeBtn = document.getElementById('fontSizeBtn');
+        const contentTexts = document.querySelectorAll('.content-text');
+        const fontSizes = ['text-lg', 'text-xl', 'text-2xl'];
+        let currentSizeIndex = 0;
+
+        fontSizeBtn.addEventListener('click', () => {
+            const oldSize = fontSizes[currentSizeIndex];
+            currentSizeIndex = (currentSizeIndex + 1) % fontSizes.length;
+            const newSize = fontSizes[currentSizeIndex];
+
+            contentTexts.forEach(el => {
+                el.classList.remove(oldSize);
+                el.classList.add(newSize);
+            });
+        });
+    </script>
+</body>
+</html>
